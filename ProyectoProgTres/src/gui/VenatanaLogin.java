@@ -30,6 +30,8 @@ import java.awt.Dimension;
 
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VenatanaLogin extends JFrame {
 
@@ -54,7 +56,7 @@ public class VenatanaLogin extends JFrame {
 
 	private void inicializar() {
 		// TODO Auto-generated method stub
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Dlorente\\workspace\\ProyectoProg3\\imagenes\\instalacionesDeportivas.jpg"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\instalacionesDeportivas.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,10 +74,8 @@ public class VenatanaLogin extends JFrame {
 		panelNorte.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblImagenLogo = new JLabel("");
-		lblImagenLogo.setIcon(new ImageIcon("C:\\Users\\Dlorente\\workspace\\ProyectoProgTres\\imagenes\\logo.png"));
+		lblImagenLogo.setIcon(new ImageIcon("C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\logo.png"));
 		lblImagenLogo.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		
 		panelNorte.add(lblImagenLogo, BorderLayout.CENTER);
 		
 		JPanel panelLogin = new JPanel();
@@ -118,7 +118,11 @@ public class VenatanaLogin extends JFrame {
 		panelLoginLay.add(passwordField);
 		
 		JButton btnIniciarSesion = new JButton("Iniciar Sesion");
-		btnIniciarSesion.setBounds(279, 75, 109, 34);
+		btnIniciarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnIniciarSesion.setBounds(279, 75, 121, 34);
 		panelLoginLay.add(btnIniciarSesion);
 		
 		JPanel panelSur = new JPanel();
@@ -130,7 +134,7 @@ public class VenatanaLogin extends JFrame {
 		lblCreadoPorDanel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panelSur.add(lblCreadoPorDanel);
 		
-		String nombre ="C:\\Users\\Dlorente\\workspace\\ProyectoProgTres\\imagenes\\instalacionesDeportivas.png";
+		String nombre ="C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\instalacionesDeportivas.png";
 		JPanelFondo panelCentral = new JPanelFondo(nombre);
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));

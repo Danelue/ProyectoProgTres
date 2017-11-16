@@ -1,7 +1,9 @@
 package datos;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
+import java.sql.Date;
 
 import javax.swing.JPanel;
 
@@ -9,36 +11,45 @@ import gui.JPanelUsuario;
 
 public class Usuario {
 	
-	private String usuario;
-	private String password;
-	private String direccion;
-	private int cp;
-	private long telefono;
-	private String email;
-	private String descripcion;
+	public String nick;
+	public String password;
+	public String nombre;
+	public int cp;
+	public String direccion;
+	public String telefono;
+	public String email;
+	public Date fecha_alta;
+	public String poblacion;
+	public String descripcion;
 	
 	
-	public Usuario(String usuario, String password) {
-		this.usuario=usuario;
+	public Usuario() {
+		
+	}
+	public Usuario(String nick, String password) {
+		this.nick=nick;
 		this.password=password;
 	}
 	
-	public Usuario(String usuario, String password, String direccion, int cp, long telefono, String email, String descripcion) {
-		this.usuario=usuario;
+	public Usuario(String nick, String password, String nombre, int cp, String direccion, String telefono, String email, Date fecha_alta, String poblacion, String descripcion) {
+		this.nick=nick;
 		this.password=password;
-		this.direccion=direccion;
+		this.nombre=nombre;
 		this.cp=cp;
+		this.direccion=direccion;
 		this.telefono=telefono;
 		this.email=email;
+		this.fecha_alta=fecha_alta;
+		this.poblacion=poblacion;
 		this.descripcion=descripcion;
 	}
 
-	public String getUsuario() {
-		return usuario;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public String getPassword() {
@@ -49,12 +60,12 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public String getDireccion() {
-		return direccion;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public int getCp() {
@@ -65,11 +76,19 @@ public class Usuario {
 		this.cp = cp;
 	}
 
-	public long getTelefono() {
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(long telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 
@@ -81,6 +100,20 @@ public class Usuario {
 		this.email = email;
 	}
 
+	public Date getFecha_alta() {
+		return fecha_alta;
+	}
+	public void setFecha_alta(Date fecha_alta) {
+		this.fecha_alta = fecha_alta;
+	}
+	public String getPoblacion() {
+		return poblacion;
+	}
+
+	public void setPoblacion(String poblacion) {
+		this.poblacion = poblacion;
+	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -88,6 +121,8 @@ public class Usuario {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	
 	
 	
 
