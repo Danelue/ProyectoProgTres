@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import java.awt.Dimension;
 import java.sql.Date;
+import java.util.Calendar;
 
 import javax.swing.JPanel;
 
@@ -18,7 +19,7 @@ public class Usuario {
 	public String direccion;
 	public String telefono;
 	public String email;
-	public Date fecha_alta;
+	public String fecha_alta;
 	public String poblacion;
 	public String descripcion;
 	
@@ -31,7 +32,7 @@ public class Usuario {
 		this.password=password;
 	}
 	
-	public Usuario(String nick, String password, String nombre, int cp, String direccion, String telefono, String email, Date fecha_alta, String poblacion, String descripcion) {
+	public Usuario(String nick, String password, String nombre, int cp, String direccion, String telefono, String email, String fecha_alta, String poblacion, String descripcion) {
 		this.nick=nick;
 		this.password=password;
 		this.nombre=nombre;
@@ -100,10 +101,10 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public Date getFecha_alta() {
+	public String getFecha_alta() {
 		return fecha_alta;
 	}
-	public void setFecha_alta(Date fecha_alta) {
+	public void setFecha_alta(String fecha_alta) {
 		this.fecha_alta = fecha_alta;
 	}
 	public String getPoblacion() {

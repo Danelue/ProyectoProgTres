@@ -9,6 +9,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import datos.Usuario;
+
 import javax.swing.JLabel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -31,6 +34,11 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 
 public class VenatanaLogin extends JFrame {
@@ -38,6 +46,8 @@ public class VenatanaLogin extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private Connection conexion;
+	private Usuario socio;
 	/**
 	 * Launch the application.
 	 */
@@ -89,7 +99,7 @@ public class VenatanaLogin extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("        ");
 		panelLogin.add(lblNewLabel_1, BorderLayout.SOUTH);
 		
-		JLabel lblNewLabel_2 = new JLabel("                       ");
+		JLabel lblNewLabel_2 = new JLabel("         ");
 		panelLogin.add(lblNewLabel_2, BorderLayout.EAST);
 		
 		JPanel panelLoginLay = new JPanel();
@@ -98,7 +108,7 @@ public class VenatanaLogin extends JFrame {
 		panelLogin.add(panelLoginLay, BorderLayout.CENTER);
 		panelLoginLay.setLayout(null);
 		
-		JLabel lblUsuario = new JLabel("Usuario");
+		JLabel lblUsuario = new JLabel("Nick");
 		lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblUsuario.setBounds(40, 38, 77, 24);
 		panelLoginLay.add(lblUsuario);
@@ -120,6 +130,8 @@ public class VenatanaLogin extends JFrame {
 		JButton btnIniciarSesion = new JButton("Iniciar Sesion");
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				comprobarLogin();
+				
 			}
 		});
 		btnIniciarSesion.setBounds(279, 75, 121, 34);
@@ -144,30 +156,31 @@ public class VenatanaLogin extends JFrame {
 		panelRegistro.setOpaque(false);
 		panelCentral.add(panelRegistro,BorderLayout.EAST);
 		
+	}
+	
+	public void comprobarLogin() {
+		String user ="postgres";
+		String password ="dlorente";
+		try {
+			try {
+				Class.forName("org.postgresql.Driver");
+				conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", user, password);
+			} catch (Exception e) {}
+			String nickusuario =textField.getText();
+			String pass = passwordField.getText();
 		
-		
-		
-		
-		
-		
-		
-				
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			Statement sentencia = conexion.createStatement();
+			String sql ="SELECT nick, password FROM socios WHERE nick = ";
+			ResultSet resultado =sentencia.executeQuery(sql);
+			System.out.println(nickusuario + pass);
+			while (resultado.next()) {
+				String compar1 = resultado.getString("nick");
+				String compar2 = resultado.getString("password");
+				System.out.println(compar1 + compar2);
+			}
+			resultado.close();
+			sentencia.close();
+			conexion.close();
+		}catch(SQLException ex) {}
 	}
 }

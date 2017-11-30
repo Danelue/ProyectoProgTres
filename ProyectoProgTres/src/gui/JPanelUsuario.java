@@ -3,23 +3,21 @@ import java.awt.Color;
 
 
 
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
 import datos.Usuario;
 
-import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Calendar;
 import java.awt.event.ActionEvent;
 
 
@@ -36,7 +34,7 @@ public class JPanelUsuario extends JPanel{
 		private JTextField textField_Poblacion;
 		private JTextField textField_descripcion;
 		static Usuario usuario;
-		private Connection con;
+		private Connection conexion;
 		static ResultSet rs = null;
 		static Statement sentencia = null;
 		
@@ -50,8 +48,17 @@ public class JPanelUsuario extends JPanel{
 			
 		}
 		
+		public void conectarDriver() {
+			String user ="postgres";
+			String password ="dlorente";
+	        try {
+	            Class.forName("org.postgresql.Driver");
+	            conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", user, password);
+	        } catch (Exception e) {}
+	    }
+		
 		public void cerrarConexion() {
-			con = null;
+			conexion = null;
 			if (rs!=null) {
 				try {
 					rs.close();
@@ -66,9 +73,9 @@ public class JPanelUsuario extends JPanel{
 					e.printStackTrace();
 				}
 			}
-			if (con != null) {
+			if (conexion != null) {
 				try {
-					con.close();
+					conexion.close();
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -143,28 +150,28 @@ public class JPanelUsuario extends JPanel{
 							usuario.telefono=textField_Telefono.getText();
 							usuario.email=textField_Email.getText();
 							
-							
+							Calendar cal1 = Calendar.getInstance();
+							String fechalta =""+cal1.get(Calendar.DATE)+"/"+cal1.get(Calendar.MONTH)
+						    +"/"+cal1.get(Calendar.YEAR);
+							usuario.fecha_alta=fechalta;
+			
 							usuario.poblacion=textField_Poblacion.getText();
 							usuario.descripcion=textField_descripcion.getText();
 							
 							String sentenciaSQL = new String();
-							sentenciaSQL = "INSERT INTO socios (nick, password, nom_usuario, cp, direccion, telefono, email, poblacion, descripcion)";
+							sentenciaSQL = "INSERT INTO socios (nick, password, nom_usuario, cp, direccion, telefono, email, fecha_alta, poblacion, descripcion)";
 							sentenciaSQL = sentenciaSQL +" VALUES ('"
 									+ usuario.nick+ "','"  + usuario.password+ "','" + usuario.nombre + "'," + usuario.cp 
-									+ ",'" + usuario.direccion + "'," + usuario.telefono+ ",'" + usuario.email+ "','"+usuario.poblacion
+									+ ",'" + usuario.direccion + "'," + usuario.telefono+ ",'" + usuario.email+ "','"+ usuario.fecha_alta+"','" +usuario.poblacion
 									+ "','"+usuario.descripcion+"');";
 							
-							String user ="postgres";
-							String password ="dlorente";
-							Class.forName("org.postgresql.Driver");
-							Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", user , password);
-							Statement sentencia = con.createStatement();;
+							conectarDriver();
+							Statement sentencia = conexion.createStatement();;
 							sentencia.executeUpdate(sentenciaSQL);
 							JOptionPane.showMessageDialog(null, "Guardado exitosamente");
 							cerrarConexion();
 						} catch (SQLException ex) {
 							// TODO Auto-generated catch block
-						} catch(ClassNotFoundException e1) {
 						}
 						
 						textField_Nick.setText("");
