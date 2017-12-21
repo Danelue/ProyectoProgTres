@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import datos.Usuario;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -47,7 +48,6 @@ public class VenatanaLogin extends JFrame {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private Connection conexion;
-	private Usuario socio;
 	/**
 	 * Launch the application.
 	 */
@@ -84,7 +84,7 @@ public class VenatanaLogin extends JFrame {
 		panelNorte.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblImagenLogo = new JLabel("");
-		lblImagenLogo.setIcon(new ImageIcon("C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\logo.png"));
+		lblImagenLogo.setIcon(new ImageIcon("imagenes\\logo.png"));
 		lblImagenLogo.setHorizontalAlignment(SwingConstants.LEFT);
 		panelNorte.add(lblImagenLogo, BorderLayout.CENTER);
 		
@@ -130,7 +130,17 @@ public class VenatanaLogin extends JFrame {
 		JButton btnIniciarSesion = new JButton("Iniciar Sesion");
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				comprobarLogin();
+				if(validarIngreso()==1) {
+					JOptionPane.showMessageDialog(null,"Bienvenido", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+					Gestion_Reservas gr = new Gestion_Reservas();
+					gr.setVisible(true);
+					VenatanaLogin.this.dispose();
+				}else {
+					JOptionPane.showMessageDialog(null, "Acceso denegado usuario y/o contraseña incoreecto/s", "Acceso denegado",JOptionPane.ERROR_MESSAGE);
+					textField.setText("");
+					passwordField.setText("");
+					
+				}
 				
 			}
 		});
@@ -146,7 +156,7 @@ public class VenatanaLogin extends JFrame {
 		lblCreadoPorDanel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panelSur.add(lblCreadoPorDanel);
 		
-		String nombre ="C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\instalacionesDeportivas.png";
+		String nombre ="imagenes\\instalacionesDeportivas.png";
 		JPanelFondo panelCentral = new JPanelFondo(nombre);
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new BorderLayout(0, 0));
@@ -158,29 +168,40 @@ public class VenatanaLogin extends JFrame {
 		
 	}
 	
-	public void comprobarLogin() {
+	public int validarIngreso() {
 		String user ="postgres";
 		String password ="dlorente";
-		try {
+		String nickusuario =textField.getText();
+		char[] arrayPass = passwordField.getPassword();
+		String pass = new String(arrayPass);
+		int result =0;
+		String sql1 = "SELECT nick, password FROM socios WHERE nick = '" + nickusuario + "' AND password='"+pass+"'";
+		
 			try {
 				Class.forName("org.postgresql.Driver");
 				conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", user, password);
-			} catch (Exception e) {}
-			String nickusuario =textField.getText();
-			String pass = passwordField.getText();
-		
-			Statement sentencia = conexion.createStatement();
-			String sql ="SELECT nick, password FROM socios WHERE nick = ";
-			ResultSet resultado =sentencia.executeQuery(sql);
-			System.out.println(nickusuario + pass);
-			while (resultado.next()) {
-				String compar1 = resultado.getString("nick");
-				String compar2 = resultado.getString("password");
-				System.out.println(compar1 + compar2);
+				Statement sentencia = conexion.createStatement();
+				ResultSet resultado =sentencia.executeQuery(sql1);
+				if(resultado.next()) {
+					result=1;
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				
+			} catch (SQLException s) {
+				JOptionPane.showMessageDialog(null,s, "Error de conexion",JOptionPane.ERROR_MESSAGE);
+			}finally {
+				try {
+					conexion.close();
+				} catch (SQLException s) {
+					JOptionPane.showMessageDialog(null,s, "Error de desconexion",JOptionPane.ERROR_MESSAGE);
+				}
 			}
-			resultado.close();
-			sentencia.close();
-			conexion.close();
-		}catch(SQLException ex) {}
+			
+		
+		return result;
+		
 	}
+	
+	
 }

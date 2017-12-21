@@ -143,7 +143,9 @@ public class JPanelUsuario extends JPanel{
 						try {
 							usuario = new Usuario();
 							usuario.nick=textField_Nick.getText();
-							usuario.password=passwordField.getText();
+							char[] array = passwordField.getPassword();
+							String pass = new String(array);
+							usuario.password=pass;
 							usuario.nombre=textField_Nombre.getText();
 							usuario.cp=Integer.parseInt(textField_CP.getText());
 							usuario.direccion=textField_Direccion.getText();
