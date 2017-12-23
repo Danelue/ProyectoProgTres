@@ -7,114 +7,162 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import datos.Usuario;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImagingOpException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class Gestion_Reservas extends JFrame implements ActionListener{
 
+	private static final long serialVersionUID = 1L;
+	private JMenuBar menuBar;
+	private JMenu mnSocio;
+	private JMenuItem mntmModificar;
+	private JMenuItem mntmEliminar;
+	private JMenuItem mntmCerrarSesin;
 	private JPanel contentPane;
-	private JMenuItem mntmConsultar;
-	private JMenuItem mntmCerrarSesin; 
-
-	/**
-	 * Launch the application.
-	 */
+	private JMenu mnReservas;
+	private JMenuItem mntmReservar;
+	private JMenuItem mntmListar;
+	private JMenu mnReporte;
+	private JMenuItem mntmQueja;
+	private JMenuItem mntmSugerencia;
+	private Connection conexion;
+	private VentanaLogin vL;
+	private Gestion_Reservas gR;
 	
 
-	/**
-	 * Create the frame.
-	 */
 	public Gestion_Reservas() {
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("GESTION DE RESERVAS");
 		setBounds(100, 100, 701, 467);
 		
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnSocio = new JMenu("SOCIO");
+		mnSocio = new JMenu("SOCIO");
 		mnSocio.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		menuBar.add(mnSocio);
 		
-		JMenuItem mntmModificar = new JMenuItem("Modificar");
+		mntmModificar = new JMenuItem("Modificar");
 		mnSocio.add(mntmModificar);
-		
-		JMenuItem mntmEliminar = new JMenuItem("Eliminar");
-		mnSocio.add(mntmEliminar);
-		
-		JMenuItem mntmCerrarSesin = new JMenuItem("Cerrar sesi\u00F3n");
-		mnSocio.add(mntmCerrarSesin);
-		
-		JMenu mnReservas = new JMenu("RESERVAS");
-		mnReservas.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		menuBar.add(mnReservas);
-		
-		JMenuItem mntmIngresar = new JMenuItem("Ingresar");
-		mnReservas.add(mntmIngresar);
-		mntmIngresar.addActionListener(new ActionListener() {
+		mntmModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				hacerReserva();
+				abrirModificar();
+				
 			}
 		});
 		
-		JMenuItem mntmConsultar = new JMenuItem("Consultar");
-		mnReservas.add(mntmConsultar);
+		mntmEliminar = new JMenuItem("Eliminar");
+		mntmEliminar.addActionListener(this);
+		mnSocio.add(mntmEliminar);
 		
-		JMenu mnReporte = new JMenu("ATENCI\u00D3N AL CLIENTE");
+		mntmCerrarSesin = new JMenuItem("Cerrar sesi\u00F3n");
+		mntmCerrarSesin.addActionListener(this);
+		mnSocio.add(mntmCerrarSesin);
+		
+		mnReservas = new JMenu("RESERVAS");
+		mnReservas.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		menuBar.add(mnReservas);
+		
+		mntmReservar = new JMenuItem("Crear Reserva");
+		mnReservas.add(mntmReservar);
+		mntmReservar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		JMenuItem mntmListar = new JMenuItem("Listar Reservas");
+		mnReservas.add(mntmListar);
+		
+		mnReporte = new JMenu("ATENCI\u00D3N AL CLIENTE");
 		mnReporte.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		menuBar.add(mnReporte);
 		
-		JMenuItem mntmQueja = new JMenuItem("Queja");
+		mntmQueja = new JMenuItem("Queja");
 		mnReporte.add(mntmQueja);
 		
-		JMenuItem mntmSugerencia = new JMenuItem("Sugerencia");
+		mntmSugerencia = new JMenuItem("Sugerencia");
 		mnReporte.add(mntmSugerencia);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\Gestion_de_Reservas.jpg"));
-		contentPane.add(lblNewLabel, BorderLayout.CENTER);
+		String nombre = "imagenes\\Gestion_de_Reservas.jpg";
+		JPanelGestion panelCentral = new JPanelGestion(nombre);
+		contentPane.add(panelCentral, BorderLayout.CENTER);
+		panelCentral.setLayout(new BorderLayout(0, 0));
+	
+	}	
+	
+	public void abrirModificar() {
+		VentanaModificar vM = new VentanaModificar();
+		vM.setVisible(true);
+		setContentPane(mntmModificar);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if(e.getSource() == mntmCerrarSesin) {
-			cerrarSesion(e);			
+		if(arg0.getSource() == mntmCerrarSesin) {
+			cerrarSesion(arg0);
+			VentanaLogin vL = new VentanaLogin();
+			vL.setVisible(true);
+			vL.setSize(1150, 671);
 		}
-		if(e.getSource() == mntmConsultar) {
-			consultarReservas(e);			
+		if(arg0.getSource() == mntmEliminar) {
+			JOptionPane.showMessageDialog(null, "¿Esta seguro de que desea eliminar este Usuario?", "Eliminar usuario", JOptionPane.WARNING_MESSAGE);
+			eliminarUsuario();
+			
 		}
-		
-		
 	}
 	
-	public void cerrarSesion(ActionEvent e) {
+	public void cerrarSesion(ActionEvent arg0) {
 		dispose();
+		
 	}
 	
-	public void consultarReservas(ActionEvent e) {
-		Consultar_Reservas cr = new Consultar_Reservas();
-		cr.setVisible(true);
-		setContentPane(cr);
-	}
+	public void eliminarUsuario() {
+		String user ="postgres";
+		String password ="dlorente";	
+		String usuarioAEliminar = VentanaLogin.getU().getNick();
+		try {
+			Class.forName("org.postgresql.Driver");
+			conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", user, password);
+			Statement sentencia = conexion.createStatement();
+			sentencia.execute("DELETE FROM socios WHERE nick = '"+usuarioAEliminar+"'");
+			JOptionPane.showMessageDialog(null, "El usuario se ha borrado correctamente", "Usuario eliminado",JOptionPane.INFORMATION_MESSAGE);
+		} catch (ClassNotFoundException e) {
+			
+		} catch (SQLException s) {
+			JOptionPane.showMessageDialog(null,s, "Error de conexion",JOptionPane.ERROR_MESSAGE);
+		}
+
 	
-	public void hacerReserva() {
-		Ingresar_Reserva ir = new Ingresar_Reserva();
-		ir.setVisible(true);
-		setContentPane(ir);
+
 	}
+
+
+	
 
 }

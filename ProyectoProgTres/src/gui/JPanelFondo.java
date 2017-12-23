@@ -22,7 +22,7 @@ import javax.swing.JPanel;
  */
 public class JPanelFondo extends JPanel {
 
-	String nombre;
+	String nombre; 
 	ImageIcon imagen;
 	
 	public JPanelFondo(String nombre) {
@@ -32,12 +32,15 @@ public class JPanelFondo extends JPanel {
 	
 	public void paint(Graphics g) {
 		Dimension dim=getSize();
-		imagen=new ImageIcon("C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\instalacionesDeportivas.png");
+		imagen=new ImageIcon("imagenes\\instalacionesDeportivas.png");
 		g.drawImage(imagen.getImage(), 0, 0, dim.width,dim.height,null);
 		setOpaque(false);
 		super.paint(g);
 	
 	}
+	
+
+	
 
 
 }

@@ -42,31 +42,39 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
 
-public class VenatanaLogin extends JFrame {
+public class VentanaLogin extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	public JTextField textField;
 	private JPasswordField passwordField;
 	private Connection conexion;
-	/**
-	 * Launch the application.
-	 */
-	
-	public VenatanaLogin() {
+	private String nickusuario;
+	private static Usuario u;
+
+	public static Usuario getU() {
+		return u;
+	}
+	public static void setU(Usuario u) {
+		VentanaLogin.u = u;
+	}
+	public VentanaLogin() {
 		
 		inicializar();
-
+		
 		
 	}
 	public static void main(String[] args) {
-		VenatanaLogin vL = new VenatanaLogin();
+		VentanaLogin vL = new VentanaLogin();
 		vL.setSize(1150, 671);
 		vL.setVisible(true);
+		
 	}
+	
+	
 
 	private void inicializar() {
 		// TODO Auto-generated method stub
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Dlorente\\git\\ProyectoProgTres\\ProyectoProgTres\\imagenes\\instalacionesDeportivas.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagenes\\instalacionesDeportivas.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -134,7 +142,7 @@ public class VenatanaLogin extends JFrame {
 					JOptionPane.showMessageDialog(null,"Bienvenido", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
 					Gestion_Reservas gr = new Gestion_Reservas();
 					gr.setVisible(true);
-					VenatanaLogin.this.dispose();
+					VentanaLogin.this.setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Acceso denegado usuario y/o contraseña incoreecto/s", "Acceso denegado",JOptionPane.ERROR_MESSAGE);
 					textField.setText("");
@@ -168,12 +176,14 @@ public class VenatanaLogin extends JFrame {
 		
 	}
 	
+	
 	public int validarIngreso() {
 		String user ="postgres";
 		String password ="dlorente";
-		String nickusuario =textField.getText();
+		nickusuario =textField.getText();
 		char[] arrayPass = passwordField.getPassword();
 		String pass = new String(arrayPass);
+		u = new Usuario(nickusuario, pass);
 		int result =0;
 		String sql1 = "SELECT nick, password FROM socios WHERE nick = '" + nickusuario + "' AND password='"+pass+"'";
 		
@@ -202,6 +212,14 @@ public class VenatanaLogin extends JFrame {
 		return result;
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
