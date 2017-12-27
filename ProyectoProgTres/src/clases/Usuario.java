@@ -1,4 +1,4 @@
-package datos;
+package clases;
 
 import java.awt.BorderLayout;
 

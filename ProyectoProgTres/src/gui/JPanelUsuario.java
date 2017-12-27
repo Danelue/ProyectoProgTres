@@ -12,7 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import datos.Usuario;
+import clases.Usuario;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -140,45 +140,8 @@ public class JPanelUsuario extends JPanel{
 			btnRegistrar.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-						
-						try {
-								usuario = new Usuario();
-								usuario.nick=textField_Nick.getText();
-								char[] array = passwordField.getPassword();
-								String pass = new String(array);
-								usuario.password=pass;
-								usuario.nombre=textField_Nombre.getText();
-								usuario.cp=Integer.parseInt(textField_CP.getText());
-								usuario.direccion=textField_Direccion.getText();
-								usuario.telefono=textField_Telefono.getText();
-								usuario.email=textField_Email.getText();
-							
-								Calendar cal1 = Calendar.getInstance();
-								String fechalta =""+cal1.get(Calendar.DATE)+"/"+cal1.get(Calendar.MONTH)
-								+"/"+cal1.get(Calendar.YEAR);
-								usuario.fecha_alta=fechalta;
-			
-								usuario.poblacion=textField_Poblacion.getText();
-								usuario.descripcion=textField_descripcion.getText();
-							
-								String sentenciaSQL = new String();
-								sentenciaSQL = "INSERT INTO socios (nick, password, nom_usuario, cp, direccion, telefono, email, fecha_alta, poblacion, descripcion)";
-								sentenciaSQL = sentenciaSQL +" VALUES ('"
-										+ usuario.nick+ "','"  + usuario.password+ "','" + usuario.nombre + "'," + usuario.cp 
-										+ ",'" + usuario.direccion + "'," + usuario.telefono+ ",'" + usuario.email+ "','"+ usuario.fecha_alta+"','" +usuario.poblacion
-										+ "','"+usuario.descripcion+"');";
-							
-								conectarDriver();
-								Statement sentencia = conexion.createStatement();;
-								sentencia.executeUpdate(sentenciaSQL);
-								JOptionPane.showMessageDialog(null, "Guardado exitosamente");
-								cerrarConexion();
-							
-							} catch (SQLException ex) {
-							// TODO Auto-generated catch block
-							}
-					
-						
+					if(textField_Nick.getText() != "" && textField_Nombre.getText() != "" && textField_CP.getText().length()!=0 && textField_Direccion.getText()!="" && textField_Email.getText()!="" && textField_Telefono.getText()!="" && textField_Poblacion.getText()!="" && textField_descripcion.getText()!="" &&passwordField.getPassword()!=null) {
+						registro();
 						textField_Nick.setText("");
 						passwordField.setText("");
 						textField_Nombre.setText("");
@@ -188,8 +151,11 @@ public class JPanelUsuario extends JPanel{
 						textField_Email.setText("");
 						textField_Poblacion.setText("");
 						textField_descripcion.setText("");
-						
+					}else {
+						JOptionPane.showMessageDialog(null, "Rellene todo los campos", "Rellenar campos",JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
+						
 			});
 			btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			btnRegistrar.setBounds(165, 369, 97, 25);
@@ -254,6 +220,51 @@ public class JPanelUsuario extends JPanel{
 			textField_descripcion.setColumns(10);
 			
 		}
+		
+		public void registro() {
+			try {
+				usuario = new Usuario();
+				usuario.nick=textField_Nick.getText();
+				char[] array = passwordField.getPassword();
+				String pass = new String(array);
+				usuario.password=pass;
+				usuario.nombre=textField_Nombre.getText();
+				usuario.cp=Integer.parseInt(textField_CP.getText());
+				usuario.direccion=textField_Direccion.getText();
+				usuario.telefono=textField_Telefono.getText();
+				usuario.email=textField_Email.getText();
+			
+				Calendar cal1 = Calendar.getInstance();
+				String fechalta =""+cal1.get(Calendar.DATE)+"/"+cal1.get(Calendar.MONTH)
+				+"/"+cal1.get(Calendar.YEAR);
+				usuario.fecha_alta=fechalta;
+
+				usuario.poblacion=textField_Poblacion.getText();
+				usuario.descripcion=textField_descripcion.getText();
+			
+				String sentenciaSQL = new String();
+				sentenciaSQL = "INSERT INTO socios (nick, password, nom_usuario, cp, direccion, telefono, email, fecha_alta, poblacion, descripcion)";
+				sentenciaSQL = sentenciaSQL +" VALUES ('"
+						+ usuario.nick+ "','"  + usuario.password+ "','" + usuario.nombre + "'," + usuario.cp 
+						+ ",'" + usuario.direccion + "'," + usuario.telefono+ ",'" + usuario.email+ "','"+ usuario.fecha_alta+"','" +usuario.poblacion
+						+ "','"+usuario.descripcion+"');";
+			
+				conectarDriver();
+				Statement sentencia = conexion.createStatement();;
+				sentencia.executeUpdate(sentenciaSQL);
+				JOptionPane.showMessageDialog(null, "Guardado exitosamente");
+				cerrarConexion();
+			
+			} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			}
+	
+		
+			
+		
+		}
+			
+		
 		
 	
 }

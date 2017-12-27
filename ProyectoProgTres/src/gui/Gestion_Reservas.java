@@ -8,17 +8,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import datos.Usuario;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.ImagingOpException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -48,9 +46,19 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 	private Connection conexion;
 	private VentanaLogin vL;
 	private Gestion_Reservas gR;
+	private JLabel lblFondo;
+	private ImageIcon imagenFondo;
+	private Icon imagenFondoRedimensionado;
 	
 
+	
 	public Gestion_Reservas() {
+		inicializar();
+	}	
+	
+	
+	
+	private void inicializar() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("GESTION DE RESERVAS");
 		setBounds(100, 100, 701, 467);
@@ -66,7 +74,8 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		mnSocio.add(mntmModificar);
 		mntmModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				abrirModificar();
+				
+				
 				
 			}
 		});
@@ -108,19 +117,29 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		String nombre = "imagenes\\Gestion_de_Reservas.jpg";
-		JPanelGestion panelCentral = new JPanelGestion(nombre);
-		contentPane.add(panelCentral, BorderLayout.CENTER);
-		panelCentral.setLayout(new BorderLayout(0, 0));
-	
-	}	
-	
-	public void abrirModificar() {
-		VentanaModificar vM = new VentanaModificar();
-		vM.setVisible(true);
-		setContentPane(mntmModificar);
+		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		int ancho =(int) dim.getWidth();
+		int alto=(int) dim.getHeight();
+		
+		lblFondo = new JLabel("");
+		lblFondo.setBounds(0,0,ancho,alto);
+		contentPane.add(lblFondo, BorderLayout.CENTER);
+		imagenFondo = new ImageIcon("imagenes\\Gestion_de_Reservas.jpg");
+		imagenFondoRedimensionado = new ImageIcon(imagenFondo.getImage().getScaledInstance(lblFondo.getWidth(),   lblFondo.getHeight(), Image.SCALE_DEFAULT));
+		lblFondo.setIcon(imagenFondoRedimensionado);
+		this.repaint();
+		
+		
+		
+		
+		
+		
 	}
-
+	
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -131,9 +150,12 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 			vL.setSize(1150, 671);
 		}
 		if(arg0.getSource() == mntmEliminar) {
-			JOptionPane.showMessageDialog(null, "¿Esta seguro de que desea eliminar este Usuario?", "Eliminar usuario", JOptionPane.WARNING_MESSAGE);
-			eliminarUsuario();
-			
+			int seleccion = JOptionPane.showOptionDialog(mntmEliminar, "¿Está seguro de que desea eliminar este Usuario?", "Eliminar usuario", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, "YES");
+			if(seleccion ==0) {
+				eliminarUsuario();
+			}else if(seleccion==1) {
+				JOptionPane.showMessageDialog(null, "Tu usuario sigue activo", "Usuario Activo",JOptionPane.INFORMATION_MESSAGE);
+			}	
 		}
 	}
 	
@@ -161,8 +183,4 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 	
 
 	}
-
-
-	
-
 }
