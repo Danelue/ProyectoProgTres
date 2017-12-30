@@ -47,15 +47,49 @@ public class VentanaLogin extends JFrame {
 	private JPanel contentPane;
 	public JTextField textField;
 	private JPasswordField passwordField;
-	private Connection conexion;
-	private String nickusuario;
+	private static Connection conexion;
+	private static String nickusuario;
 	private static Usuario u;
+	private static String pass;
+	private static String user;
+	private static String password;
+	
 
 	public static Usuario getU() {
 		return u;
 	}
 	public static void setU(Usuario u) {
 		VentanaLogin.u = u;
+	}
+	public static String getNickusuario() {
+		return nickusuario;
+	}
+	public static void setNickusuario(String nickusuario) {
+		VentanaLogin.nickusuario = nickusuario;
+	}
+	public static String getPass() {
+		return pass;
+	}
+	public static void setPass(String pass) {
+		VentanaLogin.pass = pass;
+	}
+	public static Connection getConexion() {
+		return conexion;
+	}
+	public static void setConexion(Connection conexion) {
+		VentanaLogin.conexion = conexion;
+	}
+	public static String getUser() {
+		return user;
+	}
+	public static void setUser(String user) {
+		VentanaLogin.user = user;
+	}
+	public static String getPassword() {
+		return password;
+	}
+	public static void setPassword(String password) {
+		VentanaLogin.password = password;
 	}
 	public VentanaLogin() {
 		
@@ -178,11 +212,11 @@ public class VentanaLogin extends JFrame {
 	
 	
 	public int validarIngreso() {
-		String user ="postgres";
-		String password ="dlorente";
+		user ="postgres";
+		password ="dlorente";
 		nickusuario =textField.getText();
 		char[] arrayPass = passwordField.getPassword();
-		String pass = new String(arrayPass);
+		pass = new String(arrayPass);
 		u = new Usuario(nickusuario, pass);
 		int result =0;
 		String sql1 = "SELECT nick, password FROM socios WHERE nick = '" + nickusuario + "' AND password='"+pass+"'";

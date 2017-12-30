@@ -34,7 +34,7 @@ public class JPanelUsuario extends JPanel{
 		private JTextField textField_Poblacion;
 		private JTextField textField_descripcion;
 		static Usuario usuario;
-		private Connection conexion;
+		private static Connection conexion;
 		static ResultSet rs = null;
 		static Statement sentencia = null;
 		
@@ -48,7 +48,7 @@ public class JPanelUsuario extends JPanel{
 			
 		}
 		
-		public void conectarDriver() {
+		public static void conectarDriver() {
 			String user ="postgres";
 			String password ="dlorente";
 	        try {
@@ -92,7 +92,7 @@ public class JPanelUsuario extends JPanel{
 			lblRegistro.setBounds(12, 31, 76, 22);
 			add(lblRegistro);
 			
-			JLabel lblNick = new JLabel("Nick");
+			JLabel lblNick = new JLabel("Nick*");
 			lblNick.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblNick.setForeground(Color.YELLOW);
 			lblNick.setBounds(22, 74, 38, 22);
@@ -103,7 +103,7 @@ public class JPanelUsuario extends JPanel{
 			add(textField_Nick);
 			textField_Nick.setColumns(10);
 			
-			JLabel lblPassword = new JLabel("Password");
+			JLabel lblPassword = new JLabel("Password*");
 			lblPassword.setForeground(Color.YELLOW);
 			lblPassword.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblPassword.setBounds(193, 74, 76, 22);
@@ -113,7 +113,7 @@ public class JPanelUsuario extends JPanel{
 			passwordField.setBounds(281, 75, 116, 22);
 			add(passwordField);
 			
-			JLabel lblNombre = new JLabel("Nombre");
+			JLabel lblNombre = new JLabel("Nombre*");
 			lblNombre.setForeground(Color.YELLOW);
 			lblNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblNombre.setBounds(22, 121, 66, 22);
@@ -124,7 +124,7 @@ public class JPanelUsuario extends JPanel{
 			add(textField_Nombre);
 			textField_Nombre.setColumns(10);
 			
-			JLabel lblCP = new JLabel("CP");
+			JLabel lblCP = new JLabel("CP*");
 			lblCP.setHorizontalAlignment(SwingConstants.CENTER);
 			lblCP.setForeground(Color.YELLOW);
 			lblCP.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -140,7 +140,7 @@ public class JPanelUsuario extends JPanel{
 			btnRegistrar.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					if(textField_Nick.getText() != "" && textField_Nombre.getText() != "" && textField_CP.getText().length()!=0 && textField_Direccion.getText()!="" && textField_Email.getText()!="" && textField_Telefono.getText()!="" && textField_Poblacion.getText()!="" && textField_descripcion.getText()!="" &&passwordField.getPassword()!=null) {
+					if(textField_Nick.getText() != "" && textField_Nombre.getText() != "" && textField_CP.getText().length()!=0 && textField_Direccion.getText()!="" && textField_Telefono.getText()!="" && textField_Poblacion.getText()!="" && passwordField.getPassword()!=null) {
 						registro();
 						textField_Nick.setText("");
 						passwordField.setText("");
@@ -152,7 +152,7 @@ public class JPanelUsuario extends JPanel{
 						textField_Poblacion.setText("");
 						textField_descripcion.setText("");
 					}else {
-						JOptionPane.showMessageDialog(null, "Rellene todo los campos", "Rellenar campos",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Rellene todos los campos marcados como obligatorios (*)", "Rellenar campos",JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 						
@@ -166,17 +166,17 @@ public class JPanelUsuario extends JPanel{
 			add(textField_Direccion);
 			textField_Direccion.setColumns(10);
 			
-			JLabel lblDireccion = new JLabel("Direccion");
+			JLabel lblDireccion = new JLabel("Direccion*");
 			lblDireccion.setForeground(Color.YELLOW);
 			lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblDireccion.setHorizontalAlignment(SwingConstants.CENTER);
-			lblDireccion.setBounds(22, 168, 66, 22);
+			lblDireccion.setBounds(22, 168, 76, 22);
 			add(lblDireccion);
 			
-			JLabel lblTelefono = new JLabel("Telefono");
+			JLabel lblTelefono = new JLabel("Telefono*");
 			lblTelefono.setForeground(Color.YELLOW);
 			lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 14));
-			lblTelefono.setBounds(253, 168, 66, 22);
+			lblTelefono.setBounds(250, 168, 76, 22);
 			add(lblTelefono);
 			
 			textField_Telefono = new JTextField();
@@ -203,10 +203,10 @@ public class JPanelUsuario extends JPanel{
 			add(textField_Email);
 			textField_Email.setColumns(10);
 			
-			JLabel lblPoblacion = new JLabel("Poblacion");
+			JLabel lblPoblacion = new JLabel("Poblacion*");
 			lblPoblacion.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblPoblacion.setForeground(Color.YELLOW);
-			lblPoblacion.setBounds(213, 225, 66, 16);
+			lblPoblacion.setBounds(203, 224, 76, 16);
 			add(lblPoblacion);
 			
 			textField_Poblacion = new JTextField();

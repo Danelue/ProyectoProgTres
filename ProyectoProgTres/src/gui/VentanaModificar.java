@@ -12,147 +12,227 @@ import javax.swing.JDesktopPane;
 
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import clases.Usuario;
+
 import javax.swing.JTextArea;
 import javax.swing.JPasswordField;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.awt.event.ActionEvent;
 
 public class VentanaModificar extends JInternalFrame {
-	
-	private JPanel contentPane;
-	private JTextField textFieldNick;
-	private JTextField textFieldNombre;
-	private JTextField textFieldCP;
-	private JTextField textFieldDireccion;
-	private JTextField textFieldTelefono;
-	private JTextField textFieldEmail;
-	private JTextField textFieldPoblacion;
-	private JLabel lblDireccion;
+	private JTextField textField_Nick;
 	private JPasswordField passwordField;
+	private JTextField textField_Nombre;
+	private JTextField textField_CP;
+	private JTextField textField_Direccion;
+	private JTextField textField_Telefono;
+	private JTextField textField_Email;
+	private JTextField textField_Fecha_Alta;
+	private JTextField textField_Poblacion;
+	private JTextField textField_Descripcion;
+	
+	
+	
 	
 	public VentanaModificar() {
+		inicializar();
+		obtenerDatos();
+	}
+	
+	private void inicializar() {
 		setClosable(true);
 		setTitle("MODIFICAR USUARIO");
 		setDefaultCloseOperation(JInternalFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 691, 606);
-		contentPane = new JPanel();
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		setBounds(100, 100, 701, 467);
+		getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JLabel lblNick = new JLabel("Nick:");
+		lblNick.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNick.setBounds(37, 13, 56, 26);
+		getContentPane().add(lblNick);
 		
-		JButton btnModificar = new JButton("Modificar");
-		panel.add(btnModificar);
+		textField_Nick = new JTextField();
+		textField_Nick.setEditable(false);
+		textField_Nick.setBounds(91, 17, 183, 22);
+		getContentPane().add(textField_Nick);
+		textField_Nick.setColumns(10);
 		
-		JButton btnSalir = new JButton("Salir");
-		panel.add(btnSalir);
-		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.NORTH);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblNick = new JLabel("Nick");
-		lblNick.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_1.add(lblNick);
-		
-		textFieldNick = new JTextField();
-		textFieldNick.setEditable(false);
-		panel_1.add(textFieldNick);
-		textFieldNick.setColumns(10);
-		
-		JLabel lblPass = new JLabel("Password");
-		lblPass.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_1.add(lblPass);
+		JLabel lblPassword = new JLabel("Password*:");
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblPassword.setBounds(286, 13, 84, 26);
+		getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
-		panel_1.add(passwordField);
+		passwordField.setBounds(382, 17, 202, 22);
+		getContentPane().add(passwordField);
 		
-		JPanel panel_2 = new JPanel();
-		contentPane.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		JLabel lblNombre = new JLabel("Nombre*:");
+		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNombre.setBounds(37, 76, 84, 26);
+		getContentPane().add(lblNombre);
 		
-		JPanel panel_3 = new JPanel();
-		panel_2.add(panel_3, BorderLayout.NORTH);
-		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		textField_Nombre = new JTextField();
+		textField_Nombre.setBounds(120, 80, 165, 22);
+		getContentPane().add(textField_Nombre);
+		textField_Nombre.setColumns(10);
 		
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_3.add(lblNombre);
+		JLabel lblCp = new JLabel("CP*:");
+		lblCp.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblCp.setBounds(295, 81, 43, 16);
+		getContentPane().add(lblCp);
 		
-		textFieldNombre = new JTextField();
-		panel_3.add(textFieldNombre);
-		textFieldNombre.setColumns(10);
+		textField_CP = new JTextField();
+		textField_CP.setBounds(350, 80, 116, 22);
+		getContentPane().add(textField_CP);
+		textField_CP.setColumns(10);
 		
-		JLabel lblCP = new JLabel("CP");
-		panel_3.add(lblCP);
+		JLabel lblDireccion = new JLabel("Direccion*:");
+		lblDireccion.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblDireccion.setBounds(37, 146, 84, 26);
+		getContentPane().add(lblDireccion);
 		
-		textFieldCP = new JTextField();
-		panel_3.add(textFieldCP);
-		textFieldCP.setColumns(10);
+		textField_Direccion = new JTextField();
+		textField_Direccion.setBounds(133, 150, 248, 22);
+		getContentPane().add(textField_Direccion);
+		textField_Direccion.setColumns(10);
 		
-		JPanel panel_4 = new JPanel();
-		panel_2.add(panel_4, BorderLayout.CENTER);
-		panel_4.setLayout(new BorderLayout(0, 0));
+		JLabel lblTelefono = new JLabel("Telefono*:");
+		lblTelefono.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblTelefono.setBounds(382, 148, 88, 23);
+		getContentPane().add(lblTelefono);
 		
-		JPanel panel_5 = new JPanel();
-		panel_4.add(panel_5, BorderLayout.NORTH);
-		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		textField_Telefono = new JTextField();
+		textField_Telefono.setBounds(468, 150, 116, 22);
+		getContentPane().add(textField_Telefono);
+		textField_Telefono.setColumns(10);
 		
-		lblDireccion = new JLabel("Direccion");
-		lblDireccion.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_5.add(lblDireccion);
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblEmail.setBounds(37, 217, 56, 26);
+		getContentPane().add(lblEmail);
 		
-		textFieldDireccion = new JTextField();
-		panel_5.add(textFieldDireccion);
-		textFieldDireccion.setColumns(10);
+		textField_Email = new JTextField();
+		textField_Email.setBounds(105, 221, 248, 22);
+		getContentPane().add(textField_Email);
+		textField_Email.setColumns(10);
 		
-		JLabel lblTelefono = new JLabel("Telefono");
-		panel_5.add(lblTelefono);
+		JLabel lblFechaalta = new JLabel("Fecha.Alta:");
+		lblFechaalta.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblFechaalta.setBounds(365, 217, 89, 26);
+		getContentPane().add(lblFechaalta);
 		
-		textFieldTelefono = new JTextField();
-		panel_5.add(textFieldTelefono);
-		textFieldTelefono.setColumns(10);
+		textField_Fecha_Alta = new JTextField();
+		textField_Fecha_Alta.setEditable(false);
+		textField_Fecha_Alta.setBounds(468, 221, 116, 22);
+		getContentPane().add(textField_Fecha_Alta);
+		textField_Fecha_Alta.setColumns(10);
 		
-		JPanel panel_6 = new JPanel();
-		panel_4.add(panel_6, BorderLayout.CENTER);
-		panel_6.setLayout(new BorderLayout(0, 0));
+		JLabel lblPoblacion = new JLabel("Poblacion*:");
+		lblPoblacion.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblPoblacion.setBounds(37, 284, 96, 26);
+		getContentPane().add(lblPoblacion);
 		
-		JPanel panel_7 = new JPanel();
-		panel_6.add(panel_7, BorderLayout.NORTH);
+		textField_Poblacion = new JTextField();
+		textField_Poblacion.setBounds(145, 288, 116, 22);
+		getContentPane().add(textField_Poblacion);
+		textField_Poblacion.setColumns(10);
 		
-		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_7.add(lblEmail);
+		JLabel lblDescripcion = new JLabel("Descripcion:");
+		lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblDescripcion.setBounds(270, 284, 100, 26);
+		getContentPane().add(lblDescripcion);
 		
-		textFieldEmail = new JTextField();
-		panel_7.add(textFieldEmail);
-		textFieldEmail.setColumns(10);
+		textField_Descripcion = new JTextField();
+		textField_Descripcion.setBounds(377, 271, 229, 57);
+		getContentPane().add(textField_Descripcion);
+		textField_Descripcion.setColumns(10);
 		
-		JLabel lblPoblacion = new JLabel("Poblacion");
-		panel_7.add(lblPoblacion);
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				modificarDatos();
+			}
+		});
+		btnModificar.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnModificar.setBounds(206, 342, 119, 25);
+		getContentPane().add(btnModificar);
 		
-		textFieldPoblacion = new JTextField();
-		panel_7.add(textFieldPoblacion);
-		textFieldPoblacion.setColumns(10);
-		
-		JPanel panel_8 = new JPanel();
-		panel_6.add(panel_8, BorderLayout.CENTER);
-		panel_8.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblDescripcion = new JLabel("Descripcion");
-		panel_8.add(lblDescripcion);
-		
-		JTextArea textAreaDescripcion = new JTextArea();
-		panel_8.add(textAreaDescripcion);
-		
-		
-		
-		
-		
-		
-
+		JButton btnNewButton = new JButton("Salir");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Gestion_Reservas gR = new Gestion_Reservas();
+				gR.setVisible(true);
+				
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnNewButton.setBounds(360, 342, 97, 25);
+		getContentPane().add(btnNewButton);
 	}
-
+	
+	public void obtenerDatos() {
+		String sql = "SELECT * FROM socios WHERE nick = '" + VentanaLogin.getNickusuario()  + "' AND password='"+VentanaLogin.getPass()+"'";
+		try {
+			Class.forName("org.postgresql.Driver");
+			Connection conexion = VentanaLogin.getConexion();
+			conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", VentanaLogin.getUser(), VentanaLogin.getPassword());
+			Statement sentencia = conexion.createStatement();
+			ResultSet resultado =sentencia.executeQuery(sql);
+			while (resultado.next()) {
+				textField_Nick.setText(resultado.getString("nick"));
+				passwordField.setText(resultado.getString("password"));
+				textField_Nombre.setText(resultado.getString("nom_usuario"));
+				textField_CP.setText(resultado.getString("cp"));
+				textField_Direccion.setText(resultado.getString("direccion"));
+				textField_Telefono.setText(resultado.getString("telefono"));
+				textField_Email.setText(resultado.getString("email"));
+				textField_Fecha_Alta.setText(resultado.getString("fecha_alta"));
+				textField_Poblacion.setText(resultado.getString("poblacion"));
+				textField_Descripcion.setText(resultado.getString("descripcion"));
+			}
+			sentencia.close();
+		}catch(SQLException e) {
+			
+		} catch (ClassNotFoundException e) {
+		}
+	}
+	
+	
+	
+	public void modificarDatos()  {
+		String sql = "UPDATE socios SET password=?,nom_usuario =?,cp =?,direccion=?,telefono=?,email=?,poblacion=?,descripcion=? WHERE nick = '" + VentanaLogin.getNickusuario()  + "' AND password='"+VentanaLogin.getPass()+"'";
+		Connection conexion = VentanaLogin.getConexion();
+		try {
+			if(passwordField.getText()==""||textField_Nombre.getText()==""||textField_CP.getText()==""||textField_Direccion.getText()==""||textField_Telefono.getText()==""||textField_Poblacion.getText()=="") {
+				JOptionPane.showMessageDialog(null,"Por favor rellene los campos obligatorios marcados con(*)", "Rellenar Campos",JOptionPane.WARNING_MESSAGE);
+			}else {
+				conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AlquilerdePistas", VentanaLogin.getUser(), VentanaLogin.getPassword());
+				PreparedStatement sentencia = conexion.prepareStatement(sql);
+				sentencia.setString(1, passwordField.getText());
+				sentencia.setString(2, textField_Nombre.getText());
+				sentencia.setInt(3, Integer.parseInt(textField_CP.getText()));
+				sentencia.setString(4, textField_Direccion.getText());
+				sentencia.setInt(5, Integer.parseInt(textField_Telefono.getText()));
+				sentencia.setString(6, textField_Email.getText());
+				sentencia.setString(7, textField_Poblacion.getText());
+				sentencia.setString(8, textField_Descripcion.getText());
+				sentencia.executeUpdate();
+				JOptionPane.showMessageDialog(null, "Cambios realizados correctamente", "Modifcacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+		} catch (SQLException e) {
+			
+		}
+		
+	}
 }

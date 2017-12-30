@@ -46,22 +46,32 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 	private Connection conexion;
 	private VentanaLogin vL;
 	private Gestion_Reservas gR;
-	private JLabel lblFondo;
-	private ImageIcon imagenFondo;
-	private Icon imagenFondoRedimensionado;
+	private JLabel lblNewLabel;
+	
+	
 	
 
 	
 	public Gestion_Reservas() {
 		inicializar();
-	}	
-	
-	
+		Dimension dim =getSize();
+		int ancho = (int) dim.getWidth();
+		int alto = (int) dim.getHeight();
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(100,100,ancho,alto);
+		ImageIcon imagen = new ImageIcon("imagenes\\Gestion_de_Reservas.jpg");
+		Icon icono = new ImageIcon(imagen.getImage().getScaledInstance(lblNewLabel.getWidth(), lblNewLabel.getHeight(), Image.SCALE_DEFAULT));
+		lblNewLabel.setIcon(icono);
+		this.repaint();
+		getContentPane().add(lblNewLabel, BorderLayout.CENTER);
+		
+	}
 	
 	private void inicializar() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("GESTION DE RESERVAS");
-		setBounds(100, 100, 701, 467);
+		setBounds(100, 100, 650,467);
 		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -74,9 +84,7 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		mnSocio.add(mntmModificar);
 		mntmModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				
+				abrir_Modificar();
 			}
 		});
 		
@@ -96,7 +104,7 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		mnReservas.add(mntmReservar);
 		mntmReservar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				abrirReserva_Crear();
 			}
 		});
 		
@@ -112,37 +120,12 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		
 		mntmSugerencia = new JMenuItem("Sugerencia");
 		mnReporte.add(mntmSugerencia);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
-		
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		int ancho =(int) dim.getWidth();
-		int alto=(int) dim.getHeight();
-		
-		lblFondo = new JLabel("");
-		lblFondo.setBounds(0,0,ancho,alto);
-		contentPane.add(lblFondo, BorderLayout.CENTER);
-		imagenFondo = new ImageIcon("imagenes\\Gestion_de_Reservas.jpg");
-		imagenFondoRedimensionado = new ImageIcon(imagenFondo.getImage().getScaledInstance(lblFondo.getWidth(),   lblFondo.getHeight(), Image.SCALE_DEFAULT));
-		lblFondo.setIcon(imagenFondoRedimensionado);
-		this.repaint();
-		
-		
-		
-		
 		
 		
 	}
 	
 	
-	
-	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 		if(arg0.getSource() == mntmCerrarSesin) {
 			cerrarSesion(arg0);
 			VentanaLogin vL = new VentanaLogin();
@@ -182,5 +165,17 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 
 	
 
+	}
+	
+	public void abrirReserva_Crear() {
+		Reserva_Crear rC = new Reserva_Crear();
+		rC.setVisible(true);
+		setContentPane(rC);
+	}
+	
+	public void abrir_Modificar() {
+		VentanaModificar vM = new VentanaModificar();
+		vM.setVisible(true);
+		setContentPane(vM);
 	}
 }
