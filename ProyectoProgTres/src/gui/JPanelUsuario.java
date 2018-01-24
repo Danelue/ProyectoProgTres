@@ -140,7 +140,7 @@ public class JPanelUsuario extends JPanel{
 			btnRegistrar.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
-					if(textField_Nick.getText() != "" && textField_Nombre.getText() != "" && textField_CP.getText().length()!=0 && textField_Direccion.getText()!="" && textField_Telefono.getText()!="" && textField_Poblacion.getText()!="" && passwordField.getPassword()!=null) {
+					if(textField_Nick.getText().length()!=0 && textField_Nombre.getText().length()!=0 && textField_CP.getText().length()!=0 && textField_Direccion.getText().length()!=0 && textField_Telefono.getText().length()!=0 && textField_Poblacion.getText().length()!=0&& passwordField.getPassword().length!=0) {
 						registro();
 						textField_Nick.setText("");
 						passwordField.setText("");

@@ -1,28 +1,31 @@
 package clases;
 
+import java.security.Timestamp;
 
 public class Reserva {
 	
 	private int cod_reserva;
 	private String nick;
-	private String cod_espacio;
+	private int cod_espacio;
+	private String nombre_espacio;
 	private String fecha;
 	private String hora_ini;
 	private String hora_fin;
-	private int estado;
+	
 	
 	public Reserva() {
 		
 	}
 	
-	public Reserva(int cod_reserva, String nick, String cod_espacio, String fecha, String hora_ini, String hora_fin, int estado) {
+	public Reserva(int cod_reserva, String nick, int cod_espacio,String nombre_espacio, String fecha, String hora_ini, String hora_fin) {
 		this.cod_reserva=cod_reserva;
 		this.nick=nick;
 		this.cod_espacio=cod_espacio;
+		this.nombre_espacio=nombre_espacio;
 		this.fecha=fecha;
 		this.hora_ini=hora_ini;
 		this.hora_fin=hora_fin;
-		this.estado=estado;
+		
 	}
 
 	public int getCod_reserva() {
@@ -41,12 +44,20 @@ public class Reserva {
 		this.nick = nick;
 	}
 
-	public String getCod_espacio() {
+	public int getCod_espacio() {
 		return cod_espacio;
 	}
 
-	public void setCod_espacio(String cod_espacio) {
+	public void setCod_espacio(int cod_espacio) {
 		this.cod_espacio = cod_espacio;
+	}
+
+	public String getNombre_espacio() {
+		return nombre_espacio;
+	}
+
+	public void setNombre_espacio(String nombre_espacio) {
+		this.nombre_espacio = nombre_espacio;
 	}
 
 	public String getFecha() {
@@ -73,11 +84,5 @@ public class Reserva {
 		this.hora_fin = hora_fin;
 	}
 
-	public int getEstado() {
-		return estado;
-	}
-
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
+	
 }

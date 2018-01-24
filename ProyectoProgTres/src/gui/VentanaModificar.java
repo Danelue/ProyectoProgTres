@@ -69,7 +69,7 @@ public class VentanaModificar extends JInternalFrame {
 		
 		JLabel lblPassword = new JLabel("Password*:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblPassword.setBounds(286, 13, 84, 26);
+		lblPassword.setBounds(286, 13, 95, 26);
 		getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();

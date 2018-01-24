@@ -40,9 +40,6 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 	private JMenu mnReservas;
 	private JMenuItem mntmReservar;
 	private JMenuItem mntmListar;
-	private JMenu mnReporte;
-	private JMenuItem mntmQueja;
-	private JMenuItem mntmSugerencia;
 	private Connection conexion;
 	private VentanaLogin vL;
 	private Gestion_Reservas gR;
@@ -109,17 +106,12 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		});
 		
 		JMenuItem mntmListar = new JMenuItem("Listar Reservas");
+		mntmListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Listado_Reservas();
+			}
+		});
 		mnReservas.add(mntmListar);
-		
-		mnReporte = new JMenu("ATENCI\u00D3N AL CLIENTE");
-		mnReporte.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		menuBar.add(mnReporte);
-		
-		mntmQueja = new JMenuItem("Queja");
-		mnReporte.add(mntmQueja);
-		
-		mntmSugerencia = new JMenuItem("Sugerencia");
-		mnReporte.add(mntmSugerencia);
 		
 		
 	}
@@ -168,7 +160,7 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 	}
 	
 	public void abrirReserva_Crear() {
-		Reserva_Crear rC = new Reserva_Crear();
+		Reservas rC = new Reservas();
 		rC.setVisible(true);
 		setContentPane(rC);
 	}
@@ -177,5 +169,11 @@ public class Gestion_Reservas extends JFrame implements ActionListener{
 		VentanaModificar vM = new VentanaModificar();
 		vM.setVisible(true);
 		setContentPane(vM);
+	}
+	
+	public void Listado_Reservas() {
+		Listar_Reservas lr = new Listar_Reservas();
+		lr.setVisible(true);
+		setContentPane(lr);
 	}
 }
